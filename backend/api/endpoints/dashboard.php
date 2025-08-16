@@ -1,6 +1,6 @@
 <?php
 /*
-Path: backend/api/endpoints/DashboardEndpoint.php
+Path: backend/api/endpoints/dashboard.php
 API endpoint que devuelve datos del dashboard en formato JSON.
 */
 

@@ -33,7 +33,7 @@ class DashboardController {
     protected $pot = 0;
 
     // Ahora inyectamos la dependencia de navegación.
-    public function __construct(NavigationInterface $navigation = null) {
+    public function __construct(?NavigationInterface $navigation = null) {
         $dashboardModel = new DashboardModel();
         $this->service = new DashboardService($dashboardModel);
         // Si no se provee una implementación, usamos la concreta por defecto.
@@ -58,6 +58,15 @@ class DashboardController {
             $unixtime = $dashboardData['unixtime'];
             $rawdata  = $dashboardData['rawdata'];
 
+            // CORRECCIÓN UTC-3
+            $unixtime_arg = $unixtime - 10800;
+            foreach ($rawdata as &$row) {
+                if (isset($row['unixtime'])) {
+                    $row['unixtime'] = $row['unixtime'] - 10800;
+                }
+            }
+            unset($row);
+
             // Procesar el parámetro "conta"
             $valorInicial = $unixtime * 1000;
             $conta        = $this->navigation->getConta($valorInicial);
@@ -77,7 +86,7 @@ class DashboardController {
                 'rawdata'             => $rawdata,
                 'conta'               => $conta,
                 'vel_ult_calculada'   => $vel_ult,
-                'unixtime'            => $unixtime,
+                'unixtime'            => $unixtime_arg, // <-- corregido
                 'gradient'            => $d,
                 'formatoData'         => [
                     'formato' => $formatoData['formato'] ?? 'No disponible',
