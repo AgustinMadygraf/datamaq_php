@@ -1,15 +1,3 @@
-src/logs/sistema.log
-src/__pycache__/
-src/controllers/__pycache__/
-src/logs/__pycache__/
-src/models/__pycache__/
-src/services/__pycache__/
-src/docs/00-Prompt-for-ProjectAnalysis.md
 php_error.log
-vendor/
-.env
-docs/todo.md
-todo.txt
-node_modules/
-coverage/
 todo.md
+env.php
