@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 }
 
 // Cargar el controlador y obtener los datos
-require_once __DIR__ . '/../../controllers/DashboardController.php';
+require_once __DIR__ . '/../../backend/controllers/DashboardController.php';
 $controller = new DashboardController();
 
 // Llamar al método que devuelve los datos como JSON
