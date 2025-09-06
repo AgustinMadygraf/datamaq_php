@@ -1,8 +1,8 @@
 <?php
 /**
- * API Endpoint para obtener datos del Dashboard
- * Path: backend/api/dashboard.php
- */
+* Path: api/v0/dashboard.php
+* API Endpoint para obtener datos del Dashboard
+  */
 
 // Cabeceras CORS y tipo de contenido
 header('Content-Type: application/json; charset=utf-8');
