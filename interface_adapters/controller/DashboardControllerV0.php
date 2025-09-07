@@ -5,6 +5,7 @@ Path: interface_adapters/controller/DashboardControllerV0.php
 
 require_once __DIR__ . '/../gateway/DashboardRepository.php';
 require_once __DIR__ . '/../../use_cases/GetUltimoFormato.php';
+require_once __DIR__ . '/../gateway/FormatoRepository.php';
 require_once __DIR__ . '/../../use_cases/DashboardService.php';
 
 class DashboardController {
@@ -35,8 +36,9 @@ class DashboardController {
     public function index($periodo = null, $conta = null) {
         try {
             // Obtener periodo desde argumento o default
-            $periodo = $periodo ?? (isset($_GET['periodo']) && array_key_exists($_GET['periodo'], $this->ls_periodos) ? $_GET['periodo'] : 'semana');
-            $dashboardData = $this->service->getDashboardData($periodo);
+                // Validar y asignar periodo
+                $periodo = ($periodo && array_key_exists($periodo, $this->ls_periodos)) ? $periodo : 'semana';
+            $dashboardData = $this->service->getDashboardData($periodo, $conta);
             $vel_ult  = $dashboardData['vel_ult'] ?? null;
             $unixtime = $dashboardData['unixtime'] ?? time();
             $rawdata  = $dashboardData['rawdata'] ?? [];
@@ -50,11 +52,16 @@ class DashboardController {
             unset($row);
 
             // Obtener conta desde argumento o default
-            $valorInicial = $unixtime * 1000;
-            $conta = $conta ?? (isset($_GET['conta']) && $_GET['conta'] <= $valorInicial ? intval($_GET['conta']) : $valorInicial);
+                // Validar y asignar conta
+                $valorInicial = $unixtime * 1000;
+                if ($conta !== null && $conta <= $valorInicial) {
+                    $conta = intval($conta);
+                } else {
+                    $conta = $valorInicial;
+                }
 
             $formatoRepository = new FormatoRepository();
-            $getUltimoFormato = new GetUltimoFormato($formatoRepository);
+            $getUltimoFormato = new GetUltimoFormato($formatoRepository); // FormatoRepository implementa FormatoRepositoryInterface
             $formatoData = $getUltimoFormato->execute();
 
             $class = $this->ls_class[$periodo];

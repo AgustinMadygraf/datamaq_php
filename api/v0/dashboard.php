@@ -38,7 +38,9 @@ $controller = new DashboardController();
 $presenter = new DashboardPresenterV0();
 
 try {
-    $data = $controller->apiGetDashboardData();
+    $periodo = isset($_GET['periodo']) ? $_GET['periodo'] : null;
+    $conta = isset($_GET['conta']) ? $_GET['conta'] : null;
+    $data = $controller->apiGetDashboardData($periodo, $conta);
     header('Content-Type: application/json; charset=utf-8');
     echo $presenter->present($data);
 } catch (Exception $e) {

@@ -7,7 +7,7 @@ require_once __DIR__ . '/DashboardRepositoryInterface.php';
 require_once __DIR__ . '/../../infrastructure/Database.php';
 
 class DashboardRepository implements DashboardRepositoryInterface {
-    public function getDashboardData($periodo) {
+    public function getDashboardData($periodo, $conta = null) {
         $ls_periodos = ['semana' => 604800, 'turno' => 28800, 'hora' => 7200];
         if (!isset($ls_periodos[$periodo])) {
             throw new InvalidArgumentException('Periodo no válido');
@@ -23,9 +23,10 @@ class DashboardRepository implements DashboardRepositoryInterface {
         $vel_ult = isset($res[0]['HR_COUNTER1']) ? $res[0]['HR_COUNTER1'] : 0;
         $unixtime = isset($res[0]['unixtime']) ? $res[0]['unixtime'] : time();
         $valorInicial = $unixtime * 1000;
-        $conta = $valorInicial;
-        if (isset($_GET["conta"]) && $_GET["conta"] <= $valorInicial) {
-            $conta = $_GET["conta"];
+        if ($conta !== null && $conta <= $valorInicial) {
+            $conta = intval($conta);
+        } else {
+            $conta = $valorInicial;
         }
         $tiempo1 = ($conta / 1000) - $ls_periodos[$periodo] - 80 * 60;
         $tiempo2 = $conta / 1000;

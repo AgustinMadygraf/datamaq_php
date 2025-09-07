@@ -10,9 +10,9 @@ class DashboardService {
     public function __construct(DashboardRepositoryInterface $repository) {
         $this->repository = $repository;
     }
-    public function getDashboardData($periodo = 'semana') {
+    public function getDashboardData($periodo = 'semana', $conta = null) {
         try {
-            return $this->repository->getDashboardData($periodo);
+            return $this->repository->getDashboardData($periodo, $conta);
         } catch (Exception $e) {
             throw new Exception("DashboardService error: " . $e->getMessage());
         }

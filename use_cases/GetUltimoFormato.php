@@ -1,10 +1,10 @@
 <?php
 // Caso de uso para obtener el último formato
-require_once __DIR__ . '/../interface_adapters/gateway/FormatoRepository.php';
+require_once __DIR__ . '/../interface_adapters/gateway/FormatoRepositoryInterface.php';
 
 class GetUltimoFormato {
     protected $formatoRepository;
-    public function __construct(FormatoRepository $formatoRepository) {
+    public function __construct(FormatoRepositoryInterface $formatoRepository) {
         $this->formatoRepository = $formatoRepository;
     }
     public function execute() {

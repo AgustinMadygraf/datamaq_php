@@ -4,5 +4,5 @@ Path: interface_adapters/gateway/DashboardRepositoryInterface.php
 */
 
 interface DashboardRepositoryInterface {
-    public function getDashboardData($periodo);
+    public function getDashboardData($periodo, $conta = null);
 }
