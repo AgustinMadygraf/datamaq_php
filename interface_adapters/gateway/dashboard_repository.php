@@ -53,25 +53,19 @@ class DashboardRepository implements DashboardRepositoryInterface {
         // Usar la base de datos DB_NAME2 (registro_stock)
         $db = Database::getInstance(DB_NAME2);
         $conn = $db->getConnection();
-        $sql = "SELECT * FROM produccion WHERE fecha = ? AND turno = ? ORDER BY id ASC";
-        $stmt = $conn->prepare($sql);
-        if (!$stmt) {
+        $sql = "SELECT * FROM produccion_bolsas_aux ORDER BY ID DESC LIMIT 10";
+        $result = $conn->query($sql);
+        if (!$result) {
             return [
-                'error' => 'No se pudo preparar la consulta. Verifica que la tabla produccion existe en la base de datos registro_stock.'
+                'error' => 'No se pudo ejecutar la consulta. Verifica que la tabla produccion_bolsas_aux existe en la base de datos registro_stock.'
             ];
         }
-        $stmt->bind_param('ss', $fecha, $turno);
-        $stmt->execute();
-        $result = $stmt->get_result();
         $data = [];
         while ($row = $result->fetch_assoc()) {
             $data[] = $row;
         }
-        $stmt->close();
         return [
-            'fecha' => $fecha,
-            'turno' => $turno,
-            'produccion' => $data
+            'produccion_bolsas_aux' => $data
         ];
     }
 }
