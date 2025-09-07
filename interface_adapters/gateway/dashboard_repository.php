@@ -56,7 +56,7 @@ class DashboardRepository implements DashboardRepositoryInterface {
         $result = $conn->query($sql);
         if (!$result) {
             return [
-                'error' => 'No se pudo ejecutar la consulta. Verifica que la tabla produccion_bolsas_aux existe en la base de datos registro_stock.'
+                'error' => 'No se pudo ejecutar la consulta.'
             ];
         }
         $data = [];

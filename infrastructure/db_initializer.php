@@ -2,99 +2,109 @@
 /*
 Path: infrastructure/db_initializer.php
 Inicializa la base de datos y todas las tablas necesarias.
+Permite importar datos desde un archivo SQL externo (Opción 1).
 */
 
 require_once 'app_config.php';
 
-function initializeDatabase() {
-    $mysqli = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD);
-    if ($mysqli->connect_errno) {
-        die("Error de conexión: " . $mysqli->connect_error);
-    }
+class DatabaseInitializer
+{
+    private $mysqli;
 
-    // Crear base de datos si no existe
-    if (!$mysqli->query("CREATE DATABASE IF NOT EXISTS `" . DB_NAME . "`")) {
-        die("Error creando base de datos: " . $mysqli->error);
-    }
-    $mysqli->select_db(DB_NAME);
-
-    // Crear tablas principales
-    $tables = [
-        "CREATE TABLE IF NOT EXISTS registro_stock (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            producto VARCHAR(255) NOT NULL,
-            cantidad INT NOT NULL,
-            fecha DATETIME DEFAULT CURRENT_TIMESTAMP
-        )",
-        "CREATE TABLE IF NOT EXISTS listado_precios (
-            ID_listado INT AUTO_INCREMENT PRIMARY KEY,
-            ID_formato INT,
-            cantidad INT,
-            precio_u_sIVA DECIMAL(8,2),
-            fecha_listado DATE,
-            KEY(ID_formato)
-        )",
-        "CREATE TABLE IF NOT EXISTS produccion_bolsas_aux (
-            ID INT AUTO_INCREMENT PRIMARY KEY,
-            ancho_bobina DECIMAL(5,2) NOT NULL,
-            ID_formato INT NOT NULL,
-            Fecha DATETIME NOT NULL,
-            KEY idx_ID_formato (ID_formato)
-        )",
-        "CREATE TABLE IF NOT EXISTS tabla_1 (
-            ID_formato INT PRIMARY KEY,
-            formato VARCHAR(14) NOT NULL,
-            ancho INT NOT NULL,
-            fuelle INT NOT NULL,
-            alto INT NOT NULL,
-            color VARCHAR(11) NOT NULL,
-            gramaje INT NOT NULL,
-            cantidades INT NOT NULL,
-            manijas BIT(1) NOT NULL,
-            fechatiempo TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-        )",
-        "CREATE TABLE IF NOT EXISTS tabla_2 (
-            ID_registro INT AUTO_INCREMENT PRIMARY KEY,
-            ID_formato INT NOT NULL,
-            papel VARCHAR(11) NOT NULL,
-            fecha DATE NOT NULL,
-            pedido INT NOT NULL,
-            detalle VARCHAR(50) NOT NULL,
-            origen INT NOT NULL,
-            ingreso INT NOT NULL,
-            egreso INT NOT NULL,
-            saldo INT NOT NULL,
-            destino_sobrante INT NOT NULL,
-            sobrante INT NOT NULL,
-            facturado INT NOT NULL,
-            entregado INT NOT NULL,
-            remito INT NOT NULL,
-            sobreconsumo INT NOT NULL,
-            lote INT NOT NULL
-        )"
-        // Agrega aquí más tablas según tus necesidades
-    ];
-
-    foreach ($tables as $sql) {
-        if (!$mysqli->query($sql)) {
-            echo "Error creando tabla: " . $mysqli->error . "\n";
+    public function __construct()
+    {
+        $this->mysqli = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD);
+        if ($this->mysqli->connect_errno) {
+            die("Error de conexión: " . $this->mysqli->connect_error);
         }
     }
 
-    // Ejemplo: crear tabla intervalproduction (ajusta según tu SQL real)
-    $sqlInterval = "CREATE TABLE IF NOT EXISTS intervalproduction (
-        ID INT AUTO_INCREMENT PRIMARY KEY,
-        production_rate FLOAT DEFAULT NULL
-    )";
-    if (!$mysqli->query($sqlInterval)) {
-        echo "Error creando tabla intervalproduction: " . $mysqli->error . "\n";
+    public function initialize()
+    {
+        // Crear base de datos si no existe
+        if (!$this->mysqli->query("CREATE DATABASE IF NOT EXISTS `" . DB_NAME . "`")) {
+            die("Error creando base de datos: " . $this->mysqli->error);
+        }
+        $this->mysqli->select_db(DB_NAME);
+
+        // Crear tablas principales
+        $tables = [
+            "CREATE TABLE IF NOT EXISTS registro_stock (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                producto VARCHAR(255) NOT NULL,
+                cantidad INT NOT NULL,
+                fecha DATETIME DEFAULT CURRENT_TIMESTAMP
+            )",
+            "CREATE TABLE IF NOT EXISTS produccion_bolsas_aux (
+                ID INT AUTO_INCREMENT PRIMARY KEY,
+                ancho_bobina DECIMAL(5,2) NOT NULL,
+                ID_formato INT NOT NULL,
+                Fecha DATETIME NOT NULL,
+                KEY idx_ID_formato (ID_formato)
+            )",
+            "CREATE TABLE IF NOT EXISTS tabla_1 (
+                ID_formato INT PRIMARY KEY,
+                formato VARCHAR(14) NOT NULL,
+                ancho INT NOT NULL,
+                fuelle INT NOT NULL,
+                alto INT NOT NULL,
+                color VARCHAR(11) NOT NULL,
+                gramaje INT NOT NULL,
+                cantidades INT NOT NULL,
+                manijas BIT(1) NOT NULL,
+                fechatiempo TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            )"
+        ];
+
+        foreach ($tables as $sql) {
+            if (!$this->mysqli->query($sql)) {
+                echo "Error creando tabla: " . $this->mysqli->error . "\n";
+            }
+        }
+
+        // Tabla adicional: intervalproduction
+        $sqlInterval = "CREATE TABLE IF NOT EXISTS intervalproduction (
+            ID INT AUTO_INCREMENT PRIMARY KEY,
+            unixtime INT,
+            HR_COUNTER1 INT,
+            HR_COUNTER2 INT,
+            production_rate FLOAT DEFAULT NULL
+        )";
+        if (!$this->mysqli->query($sqlInterval)) {
+            echo "Error creando tabla intervalproduction: " . $this->mysqli->error . "\n";
+        }
+
+        echo "Inicialización de tablas completada.\n";
     }
 
-    $mysqli->close();
-    echo "Inicialización completada.\n";
+    public function importIntervalProductionData($sqlFilePath)
+    {
+        $sql = file_get_contents($sqlFilePath);
+        if ($sql === false) {
+            echo "No se pudo leer el archivo SQL: $sqlFilePath\n";
+            return;
+        }
+        // Ejecutar múltiples sentencias
+        if (!$this->mysqli->multi_query($sql)) {
+            echo "Error importando datos: " . $this->mysqli->error . "\n";
+        } else {
+            // Limpiar resultados pendientes
+            while ($this->mysqli->more_results() && $this->mysqli->next_result()) {;}
+            echo "Datos importados correctamente desde $sqlFilePath\n";
+        }
+    }
+
+    public function close()
+    {
+        $this->mysqli->close();
+    }
 }
 
 // Permite ejecutar el script desde CLI
 if (php_sapi_name() === 'cli') {
-    initializeDatabase();
+    $initializer = new DatabaseInitializer();
+    $initializer->initialize();
+    // Importar datos después de crear las tablas
+    $initializer->importIntervalProductionData(__DIR__ . '/../database/intervalproduction.sql');
+    $initializer->close();
 }
