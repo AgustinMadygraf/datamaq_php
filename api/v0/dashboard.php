@@ -31,8 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 }
 
 
-require_once __DIR__ . '/../../interface_adapters/controller/DashboardControllerV0.php';
-require_once __DIR__ . '/../../interface_adapters/presenter/DashboardPresenterV0.php';
+require_once __DIR__ . '/../../interface_adapters/controller/dashboard_controller_v0.php';
+require_once __DIR__ . '/../../interface_adapters/presenter/dashboard_presenter_v0.php';
 
 $controller = new DashboardController();
 $presenter = new DashboardPresenterV0();

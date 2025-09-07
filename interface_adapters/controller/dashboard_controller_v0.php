@@ -3,10 +3,10 @@
 Path: interface_adapters/controller/DashboardControllerV0.php
 */
 
-require_once __DIR__ . '/../gateway/DashboardRepository.php';
-require_once __DIR__ . '/../../use_cases/GetUltimoFormato.php';
-require_once __DIR__ . '/../gateway/FormatoRepository.php';
-require_once __DIR__ . '/../../use_cases/DashboardService.php';
+require_once __DIR__ . '/../gateway/dashboard_repository.php';
+require_once __DIR__ . '/../../use_cases/get_ultimo_formato.php';
+require_once __DIR__ . '/../gateway/formato_repository.php';
+require_once __DIR__ . '/../../use_cases/dashboard_service.php';
 
 class DashboardController {
     protected $service;

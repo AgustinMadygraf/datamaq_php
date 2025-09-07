@@ -1,5 +1,9 @@
 <?php
-// Presentador para la versión v1 del dashboard
+/*
+Path: interface_adapters/presenter/dashboard_presenter_v1.php
+Presentador para la versión v1 del dashboard
+*/
+
 class DashboardPresenterV1 {
     public function present($dashboard) {
         $response = [

@@ -1,10 +1,10 @@
 <?php
 /*
-Path: interface_adapters/gateway/DashboardRepository.php
+Path: interface_adapters/gateway/dashboard_repository.php
 */
 
-require_once __DIR__ . '/DashboardRepositoryInterface.php';
-require_once __DIR__ . '/../../infrastructure/Database.php';
+require_once __DIR__ . '/dashboard_repository_interface.php';
+require_once __DIR__ . '/../../infrastructure/database.php';
 
 class DashboardRepository implements DashboardRepositoryInterface {
     public function getDashboardData($periodo, $conta = null) {

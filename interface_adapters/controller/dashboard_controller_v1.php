@@ -1,9 +1,9 @@
 <?php
 // Controller para la versión v1 del dashboard
-require_once __DIR__ . '/../../use_cases/GetDashboardData.php';
-require_once __DIR__ . '/../presenter/DashboardPresenterV1.php';
-require_once __DIR__ . '/../gateway/DashboardRepository.php';
-require_once __DIR__ . '/../gateway/DashboardRepositoryInterface.php';
+require_once __DIR__ . '/../../use_cases/get_dashboard_data.php';
+require_once __DIR__ . '/../presenter/dashboard_presenter_v1.php';
+require_once __DIR__ . '/../gateway/dashboard_repository.php';
+require_once __DIR__ . '/../gateway/dashboard_repository_interface.php';
 
 class DashboardControllerV1 {
     protected $repository;

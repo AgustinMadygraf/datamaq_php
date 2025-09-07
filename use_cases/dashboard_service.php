@@ -3,7 +3,7 @@
 Path: use_cases/DashboardService.php
 */
 
-require_once __DIR__ . '/../interface_adapters/gateway/DashboardRepositoryInterface.php';
+require_once __DIR__ . '/../interface_adapters/gateway/dashboard_repository_interface.php';
 
 class DashboardService {
     protected $repository;

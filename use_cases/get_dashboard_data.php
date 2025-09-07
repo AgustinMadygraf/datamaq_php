@@ -1,6 +1,6 @@
 <?php
 // Caso de uso para obtener los datos del dashboard (v1)
-require_once __DIR__ . '/../entities/Dashboard.php';
+require_once __DIR__ . '/../entities/dashboard.php';
 
 class GetDashboardData {
     protected $repository;
