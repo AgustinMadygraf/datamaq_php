@@ -50,8 +50,7 @@ class DashboardRepository implements DashboardRepositoryInterface {
     public function getRealDashboardData($params = []) {
         $fecha = isset($params['fecha']) ? $params['fecha'] : date('Y-m-d');
         $turno = isset($params['turno']) ? $params['turno'] : 'completo';
-        // Usar la base de datos DB_NAME2 (registro_stock)
-        $db = Database::getInstance(DB_NAME2);
+        $db = Database::getInstance(DB_NAME);
         $conn = $db->getConnection();
         $sql = "SELECT * FROM produccion_bolsas_aux ORDER BY ID DESC LIMIT 10";
         $result = $conn->query($sql);
