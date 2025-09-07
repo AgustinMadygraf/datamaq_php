@@ -1,3 +1,4 @@
 php_error.log
 todo.md
 env.php
+logs/app_errors.log

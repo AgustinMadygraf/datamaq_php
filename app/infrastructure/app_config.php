@@ -17,3 +17,13 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 ini_set('log_errors', 1);
 ini_set('error_log', '/c:/AppServ/www/datamaq_php/php_error.log');
+
+// Add logging configuration
+// Make sure error logging is enabled
+ini_set('log_errors', 1);
+ini_set('error_log', __DIR__ . '/../../logs/app_errors.log');
+
+// Create logs directory if it doesn't exist
+if (!file_exists(__DIR__ . '/../../logs')) {
+    mkdir(__DIR__ . '/../../logs', 0755, true);
+}
