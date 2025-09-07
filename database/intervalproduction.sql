@@ -1,8 +1,3 @@
-
---
--- Volcado de datos para la tabla `intervalproduction`
---
-
 INSERT INTO `intervalproduction` (`ID`, `unixtime`, `HR_COUNTER1`, `HR_COUNTER2`, `production_rate`) VALUES
 (1, 1705926300, 0, 0, NULL),
 (2, 1705926600, 0, 0, NULL),
@@ -35637,31 +35632,4 @@ INSERT INTO `intervalproduction` (`ID`, `unixtime`, `HR_COUNTER1`, `HR_COUNTER2`
 (51903, 1756479600, 0, 0, NULL),
 (51904, 1756479900, 0, 0, NULL),
 (51905, 1756480200, 0, 0, NULL),
-(51906, 1756480500, 0, 0, NULL),
-(51907, 1756491600, 0, 0, NULL),
-(51908, 1756491900, 0, 0, NULL);
-
---
--- Índices para tablas volcadas
---
-
---
--- Indices de la tabla `intervalproduction`
---
-ALTER TABLE `intervalproduction`
-  ADD PRIMARY KEY (`ID`);
-
---
--- AUTO_INCREMENT de las tablas volcadas
---
-
---
--- AUTO_INCREMENT de la tabla `intervalproduction`
---
-ALTER TABLE `intervalproduction`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51909;
-COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+(51906, 1756480500, 0, 0, NULL)

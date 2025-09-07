@@ -18,11 +18,13 @@ class FormatoRepository implements FormatoRepositoryInterface {
     }
 
     public function getUltimoFormato() {
-        $data = [
-            'ID_formato'   => "No especificado",
-            'ancho_bobina' => "No especificado",
-            'formato'      => "No especificado"
+        // Valores por defecto
+        $defaults = [
+            'ID_formato'   => 1,
+            'ancho_bobina' => 680,
+            'formato'      => "22 x 10 x 30"
         ];
+        $data = $defaults;
 
         $sql = "SELECT pb.*, t.formato 
                 FROM produccion_bolsas_aux pb 
@@ -34,9 +36,9 @@ class FormatoRepository implements FormatoRepositoryInterface {
             $result = mysqli_stmt_get_result($stmt);
             if ($result && $row = mysqli_fetch_assoc($result)) {
                 $data = [
-                    'ID_formato'   => $row['ID_formato'] ?? "No especificado",
-                    'ancho_bobina' => $row['ancho_bobina'] ?? "No especificado",
-                    'formato'      => $row['formato'] ?? "No especificado"
+                    'ID_formato'   => $row['ID_formato'] ?? $defaults['ID_formato'],
+                    'ancho_bobina' => $row['ancho_bobina'] ?? $defaults['ancho_bobina'],
+                    'formato'      => $row['formato'] ?? $defaults['formato']
                 ];
             }
             mysqli_stmt_close($stmt);

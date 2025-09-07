@@ -84,12 +84,19 @@ class DatabaseInitializer
             echo "No se pudo leer el archivo SQL: $sqlFilePath\n";
             return;
         }
-        // Ejecutar múltiples sentencias
         if (!$this->mysqli->multi_query($sql)) {
             echo "Error importando datos: " . $this->mysqli->error . "\n";
         } else {
-            // Limpiar resultados pendientes
-            while ($this->mysqli->more_results() && $this->mysqli->next_result()) {;}
+            do {
+                // Si hay un error en el resultado actual, mostrarlo y salir
+                if ($result = $this->mysqli->store_result()) {
+                    $result->free();
+                }
+                if ($this->mysqli->errno) {
+                    echo "Error en multi_query: " . $this->mysqli->error . "\n";
+                    break;
+                }
+            } while ($this->mysqli->more_results() && $this->mysqli->next_result());
             echo "Datos importados correctamente desde $sqlFilePath\n";
         }
     }
