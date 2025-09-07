@@ -3,11 +3,11 @@
 Path: use_cases/DashboardService.php
 */
 
-require_once __DIR__ . '/../interface_adapters/gateway/DashboardRepository.php';
+require_once __DIR__ . '/../interface_adapters/gateway/DashboardRepositoryInterface.php';
 
 class DashboardService {
     protected $repository;
-    public function __construct(DashboardRepository $repository) {
+    public function __construct(DashboardRepositoryInterface $repository) {
         $this->repository = $repository;
     }
     public function getDashboardData($periodo = 'semana') {

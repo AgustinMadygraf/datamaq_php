@@ -3,6 +3,12 @@
 require_once __DIR__ . '/../entities/Dashboard.php';
 
 class GetDashboardData {
+    protected $repository;
+
+    public function __construct(DashboardRepositoryInterface $repository) {
+        $this->repository = $repository;
+    }
+
     public function execute($fecha, $turno) {
         // Aquí iría la lógica real de negocio, por ahora devolvemos datos simulados (como en v1)
         $min = 50; $max = 120;
@@ -25,6 +31,7 @@ class GetDashboardData {
         $dashboard = new Dashboard(100, strtotime($fecha), $series);
         return $dashboard;
     }
+
     private function random_series($min, $max, $count = 288) {
         $arr = [];
         for ($i = 0; $i < $count; $i++) {
