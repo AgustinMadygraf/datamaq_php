@@ -26,8 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 }
 
 // Cargar el controlador de Clean Architecture y obtener los datos
-//require_once __DIR__ . '/../../interface_adapters/controller/DashboardController.php';
-require_once __DIR__ . '/../../backend/controllers/DashboardController.php';
+require_once __DIR__ . '/../../interface_adapters/controller/DashboardController.php';
 $controller = new DashboardController();
 // Llamar al método que devuelve los datos como JSON
 $controller->apiGetDashboardData();
