@@ -3,7 +3,7 @@
 Path: infrastructure/app_config.php
 */
 
-require_once __DIR__ . '/../env.php';
+require_once __DIR__ . '/../../env.php';
 
 
 // Database configuration

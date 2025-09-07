@@ -17,7 +17,7 @@ $fecha = isset($_GET['fecha']) ? $_GET['fecha'] : date('Y-m-d');
 $turno = isset($_GET['turno']) ? $_GET['turno'] : 'completo';
 
 // Cargar el controlador de Clean Architecture
-require_once __DIR__ . '/../../interface_adapters/controller/dashboard_controller_v1_1.php';
+require_once __DIR__ . '/../../app/interface_adapters/controller/dashboard_controller_v1_1.php';
 
 $controller = new DashboardControllerV1_1();
 $params = ['fecha' => $fecha, 'turno' => $turno];
