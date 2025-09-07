@@ -17,4 +17,4 @@ define('DB_NAME2', $_ENV['DB_NAME2']);
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 ini_set('log_errors', 1);
-ini_set('error_log', '/c:/AppServ/www/DataMaq/php_error.log');
+ini_set('error_log', '/c:/AppServ/www/datamaq_php/php_error.log');

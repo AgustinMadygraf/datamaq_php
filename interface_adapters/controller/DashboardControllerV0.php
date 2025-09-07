@@ -32,16 +32,10 @@ class DashboardController {
     $this->service = new DashboardService($dashboardRepository);
     }
 
-    public function index($asApiResponse = false) {
-        if (!$asApiResponse && isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false) {
-            $asApiResponse = true;
-        }
+    public function index($periodo = null, $conta = null) {
         try {
-            // Obtener periodo directamente de $_GET
-            $periodo = 'semana';
-            if (isset($_GET['periodo']) && array_key_exists($_GET['periodo'], $this->ls_periodos)) {
-                $periodo = $_GET['periodo'];
-            }
+            // Obtener periodo desde argumento o default
+            $periodo = $periodo ?? (isset($_GET['periodo']) && array_key_exists($_GET['periodo'], $this->ls_periodos) ? $_GET['periodo'] : 'semana');
             $dashboardData = $this->service->getDashboardData($periodo);
             $vel_ult  = $dashboardData['vel_ult'] ?? null;
             $unixtime = $dashboardData['unixtime'] ?? time();
@@ -55,16 +49,16 @@ class DashboardController {
             }
             unset($row);
 
-            // Obtener conta directamente de $_GET
+            // Obtener conta desde argumento o default
             $valorInicial = $unixtime * 1000;
-            $conta = $valorInicial;
-            if (isset($_GET['conta']) && $_GET['conta'] <= $valorInicial) {
-                $conta = intval($_GET['conta']);
-            }
+            $conta = $conta ?? (isset($_GET['conta']) && $_GET['conta'] <= $valorInicial ? intval($_GET['conta']) : $valorInicial);
 
             $formatoRepository = new FormatoRepository();
             $getUltimoFormato = new GetUltimoFormato($formatoRepository);
             $formatoData = $getUltimoFormato->execute();
+
+            $class = $this->ls_class[$periodo];
+            $ref_class = ['presione', 'presado'];
 
             $data = [
                 'periodo'             => $periodo,
@@ -77,13 +71,8 @@ class DashboardController {
                 'formatoData'         => [
                     'formato' => $formatoData['formato'] ?? 'No disponible',
                     'ancho_bobina' => $formatoData['ancho_bobina'] ?? 'No disponible'
-                ]
-            ];
-
-            if ($asApiResponse) {
-                $class = $this->ls_class[$periodo];
-                $ref_class = ['presione', 'presado'];
-                $data['uiData'] = [
+                ],
+                'uiData' => [
                     'class' => $class,
                     'refClass' => [
                         $ref_class[$class[0]],
@@ -92,24 +81,17 @@ class DashboardController {
                     ],
                     'preConta' => $conta - 1000 * $this->ls_periodos[$periodo],
                     'postConta' => $conta + 1000 * $this->ls_periodos[$periodo],
-                ];
-                header('Content-Type: application/json; charset=utf-8');
-                echo json_encode(['status' => 'success', 'data' => $data], JSON_UNESCAPED_UNICODE);
-                exit;
-            }
+                ]
+            ];
             return $data;
         } catch (Exception $e) {
             error_log("DashboardController error: " . $e->getMessage());
-            if ($asApiResponse) {
-                header('Content-Type: application/json; charset=utf-8', true, 500);
-                echo json_encode(['status' => 'error', 'message' => $e->getMessage()], JSON_UNESCAPED_UNICODE);
-                exit;
-            }
             throw $e;
         }
     }
 
-    public function apiGetDashboardData() {
-        $this->index(true);
+    public function apiGetDashboardData($periodo = null, $conta = null) {
+        // Devuelve los datos crudos para el presentador
+        return $this->index($periodo, $conta);
     }
 }

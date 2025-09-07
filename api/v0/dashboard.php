@@ -30,8 +30,18 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
     exit;
 }
 
-// Cargar el controlador de Clean Architecture y obtener los datos
+
 require_once __DIR__ . '/../../interface_adapters/controller/DashboardControllerV0.php';
+require_once __DIR__ . '/../../interface_adapters/presenter/DashboardPresenterV0.php';
+
 $controller = new DashboardController();
-// Llamar al método que devuelve los datos como JSON
-$controller->apiGetDashboardData();
+$presenter = new DashboardPresenterV0();
+
+try {
+    $data = $controller->apiGetDashboardData();
+    header('Content-Type: application/json; charset=utf-8');
+    echo $presenter->present($data);
+} catch (Exception $e) {
+    header('Content-Type: application/json; charset=utf-8', true, 500);
+    echo $presenter->presentError($e->getMessage(), 500);
+}
