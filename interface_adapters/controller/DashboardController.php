@@ -2,14 +2,11 @@
 // Controlador migrado desde backend/controllers/DashboardController.php
 require_once __DIR__ . '/../gateway/DashboardModel.php';
 require_once __DIR__ . '/../gateway/FormatoModel.php';
-require_once __DIR__ . '/../helpers/GradientHelper.php';
-require_once __DIR__ . '/../core/NavigationInterface.php';
-require_once __DIR__ . '/../core/Navigation.php';
 require_once __DIR__ . '/DashboardService.php';
 
 class DashboardController {
     protected $service;
-    protected $navigation;
+
     protected $ls_periodos = [
         'semana' => 604800,
         'turno'  => 28800,
@@ -27,10 +24,9 @@ class DashboardController {
     ];
     protected $pot = 0;
 
-    public function __construct(?NavigationInterface $navigation = null) {
+    public function __construct() {
         $dashboardModel = new DashboardModel();
         $this->service = new DashboardService($dashboardModel);
-        $this->navigation = $navigation ?: new Navigation();
     }
 
     public function index($asApiResponse = false) {
@@ -38,11 +34,15 @@ class DashboardController {
             $asApiResponse = true;
         }
         try {
-            $periodo = $this->navigation->getPeriod();
+            // Obtener periodo directamente de $_GET
+            $periodo = 'semana';
+            if (isset($_GET['periodo']) && array_key_exists($_GET['periodo'], $this->ls_periodos)) {
+                $periodo = $_GET['periodo'];
+            }
             $dashboardData = $this->service->getDashboardData($periodo);
-            $vel_ult  = $dashboardData['vel_ult'];
-            $unixtime = $dashboardData['unixtime'];
-            $rawdata  = $dashboardData['rawdata'];
+            $vel_ult  = $dashboardData['vel_ult'] ?? null;
+            $unixtime = $dashboardData['unixtime'] ?? time();
+            $rawdata  = $dashboardData['rawdata'] ?? [];
 
             $unixtime_arg = $unixtime - 10800;
             foreach ($rawdata as &$row) {
@@ -52,9 +52,13 @@ class DashboardController {
             }
             unset($row);
 
+            // Obtener conta directamente de $_GET
             $valorInicial = $unixtime * 1000;
-            $conta        = $this->navigation->getConta($valorInicial);
-            $d = GradientHelper::calculateGradient($this->pot);
+            $conta = $valorInicial;
+            if (isset($_GET['conta']) && $_GET['conta'] <= $valorInicial) {
+                $conta = intval($_GET['conta']);
+            }
+
             $formatoModel = new FormatoModel();
             $formatoData  = $formatoModel->getUltimoFormato();
 
@@ -66,7 +70,6 @@ class DashboardController {
                 'conta'               => $conta,
                 'vel_ult_calculada'   => $vel_ult,
                 'unixtime'            => $unixtime_arg,
-                'gradient'            => $d,
                 'formatoData'         => [
                     'formato' => $formatoData['formato'] ?? 'No disponible',
                     'ancho_bobina' => $formatoData['ancho_bobina'] ?? 'No disponible'
@@ -85,10 +88,6 @@ class DashboardController {
                     ],
                     'preConta' => $conta - 1000 * $this->ls_periodos[$periodo],
                     'postConta' => $conta + 1000 * $this->ls_periodos[$periodo],
-                    'estiloFondo' => sprintf(
-                        "background: linear-gradient(195deg, rgba(107,170,34,0.9) %d%%, rgba(255,164,1,0.9) %d%%, rgba(234,53,34,0.9) %d%%, rgba(100,10,5,0.9) %d%%);",
-                        $d[3], $d[2], $d[1], $d[0]
-                    )
                 ];
                 header('Content-Type: application/json; charset=utf-8');
                 echo json_encode(['status' => 'success', 'data' => $data], JSON_UNESCAPED_UNICODE);
