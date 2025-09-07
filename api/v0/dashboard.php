@@ -1,8 +1,8 @@
 <?php
-/**
-* Path: api/v0/dashboard.php
-* API Endpoint para obtener datos del Dashboard
-  */
+/*
+Path: api/v0/dashboard.php
+API Endpoint para obtener datos del Dashboard
+*/
 
 // Cabeceras CORS y tipo de contenido
 header('Content-Type: application/json; charset=utf-8');
@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 }
 
 // Cargar el controlador de Clean Architecture y obtener los datos
-require_once __DIR__ . '/../../interface_adapters/controller/DashboardController.php';
+require_once __DIR__ . '/../../interface_adapters/controller/DashboardControllerV0.php';
 $controller = new DashboardController();
 // Llamar al método que devuelve los datos como JSON
 $controller->apiGetDashboardData();

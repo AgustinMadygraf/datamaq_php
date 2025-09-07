@@ -1,4 +1,8 @@
 <?php
+/*
+Path: interface_adapters/gateway/DashboardModel.php
+*/
+
 require_once __DIR__ . '/DashboardRepositoryInterface.php';
 require_once __DIR__ . '/../../backend/core/Database.php';
 
