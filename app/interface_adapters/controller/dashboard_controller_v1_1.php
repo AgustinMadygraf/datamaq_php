@@ -1,5 +1,7 @@
 <?php
-// Controlador para dashboard v1.1
+/*
+Path: app/interface_adapters/controller/dashboard_controller_v1_1.php
+*/
 
 require_once dirname(__DIR__, 1) . '/presenter/dashboard_presenter_v1_1.php';
 require_once dirname(__DIR__, 1) . '/gateway/dashboard_repository.php';

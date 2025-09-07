@@ -1,6 +1,6 @@
 <?php
 /*
-Path: interface_adapters/gateway/dashboard_repository.php
+Path: app/interface_adapters/gateway/dashboard_repository.php
 */
 
 require_once __DIR__ . '/dashboard_repository_interface.php';

@@ -1,6 +1,6 @@
 <?php
 /*
-Path: interface_adapters/gateway/formato_repository.php
+Path: app/interface_adapters/gateway/formato_repository.php
 */
 
 require_once __DIR__ . '/formato_repository_interface.php';

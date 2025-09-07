@@ -1,5 +1,8 @@
 <?php
-// Caso de uso para obtener los datos del dashboard (v1)
+/*
+Path: app/use_cases/get_dashboard_data.php
+*/
+
 require_once __DIR__ . '/../entities/dashboard.php';
 
 class GetDashboardData {

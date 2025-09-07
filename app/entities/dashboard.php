@@ -1,5 +1,8 @@
 <?php
-// Entidad Dashboard: representa los datos del panel de control en el dominio
+/*
+Path: app/entities/dashboard.php
+*/
+
 class Dashboard {
     public $velUlt;
     public $unixtime;

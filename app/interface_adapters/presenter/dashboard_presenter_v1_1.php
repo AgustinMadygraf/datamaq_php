@@ -1,5 +1,7 @@
 <?php
-// Presentador para dashboard v1.1
+/*
+Path: app/interface_adapters/presenter/dashboard_presenter_v1_1.php
+*/
 
 class DashboardPresenterV1_1 {
     public function present($data) {

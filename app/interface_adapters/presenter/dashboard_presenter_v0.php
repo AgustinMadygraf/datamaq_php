@@ -1,7 +1,6 @@
 <?php
 /*
-Path: interface_adapters/presenter/dashboard_presenter_v0.php
-// Presentador para la versión v0 del dashboard
+Path: app/interface_adapters/presenter/dashboard_presenter_v0.php
 */
 
 class DashboardPresenterV0 {

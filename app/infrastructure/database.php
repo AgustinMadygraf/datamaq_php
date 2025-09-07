@@ -1,6 +1,6 @@
 <?php
 /*
-Path: infrastructure/database.php
+Path: app/infrastructure/database.php
 Este archivo contiene la clase Database, que se encarga de manejar la conexión a la base de datos.
 */
 

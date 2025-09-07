@@ -1,8 +1,8 @@
 <?php
 /*
-Path: infrastructure/db_initializer.php
+Path: app/infrastructure/db_initializer.php
 Inicializa la base de datos y todas las tablas necesarias.
-Permite importar datos desde un archivo SQL externo (Opción 1).
+Permite importar datos desde un archivo SQL externo.
 */
 
 require_once 'app_config.php';
