@@ -1,11 +1,11 @@
 <?php
 /*
-Path: backend/core/Database.php
+Path: infrastructure/Database.php
 Este archivo contiene la clase Database, que se encarga de manejar la conexión a la base de datos.
 */
 
 // Incluir las constantes definidas en conn.php
-require_once __DIR__ . '/../config/conn.php';
+require_once __DIR__ . '/conn.php';
 
 class Database {
     private static $instance = null;

@@ -4,7 +4,7 @@ Path: interface_adapters/gateway/DashboardModel.php
 */
 
 require_once __DIR__ . '/DashboardRepositoryInterface.php';
-require_once __DIR__ . '/../../backend/core/Database.php';
+require_once __DIR__ . '/../../infrastructure/Database.php';
 
 class DashboardModel implements DashboardRepositoryInterface {
     public function getDashboardData($periodo) {

@@ -6,7 +6,7 @@ class FormatoModel implements FormatoRepositoryInterface {
 
     public function __construct() {
         // Reutiliza la conexión mediante la configuración de conn.php
-        require_once __DIR__ . '/../../backend/config/conn.php';
+        require_once __DIR__ . '/../../infrastructure/conn.php';
         $this->conexion = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME2);
         if (!$this->conexion) {
             die("Conexión fallida: " . mysqli_connect_error());

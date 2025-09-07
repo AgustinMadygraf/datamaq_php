@@ -1,5 +1,9 @@
 <?php
-require_once __DIR__ . '/../../env.php';
+/*
+Path: infrastructure/app_config.php
+*/
+
+require_once __DIR__ . '/../env.php';
 
 
 // Database configuration
@@ -14,5 +18,3 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 ini_set('log_errors', 1);
 ini_set('error_log', '/c:/AppServ/www/DataMaq/php_error.log');
-
-// ...other centralized configurations...
