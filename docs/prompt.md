@@ -9,7 +9,6 @@ Estoy trabajando en un proyecto que intenta seguir la Clean Architecture, detall
   - interface_adapters/presenter/
   - interface_adapters/gateway/
   - interface_adapters/controller/
-  - infrastructure/laravel/
   - infrastructure/
   - api/
 

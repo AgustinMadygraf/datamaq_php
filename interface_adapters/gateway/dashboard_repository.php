@@ -45,4 +45,12 @@ class DashboardRepository implements DashboardRepositoryInterface {
             'rawdata'   => $rawdata,
         ];
     }
+
+    // Alias para v1.1, permite futura extensión
+    public function getRealDashboardData($params = []) {
+        // Extraer parámetros esperados para v1.1
+        $periodo = isset($params['periodo']) ? $params['periodo'] : 'semana';
+        $conta = isset($params['conta']) ? $params['conta'] : null;
+        return $this->getDashboardData($periodo, $conta);
+    }
 }
