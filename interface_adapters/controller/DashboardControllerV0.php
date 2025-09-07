@@ -3,8 +3,8 @@
 Path: interface_adapters/controller/DashboardControllerV0.php
 */
 
-require_once __DIR__ . '/../gateway/DashboardModel.php';
-require_once __DIR__ . '/../gateway/FormatoModel.php';
+require_once __DIR__ . '/../gateway/DashboardRepository.php';
+require_once __DIR__ . '/../gateway/FormatoRepository.php';
 require_once __DIR__ . '/../../use_cases/DashboardService.php';
 
 class DashboardController {
@@ -28,8 +28,8 @@ class DashboardController {
     protected $pot = 0;
 
     public function __construct() {
-        $dashboardModel = new DashboardModel();
-        $this->service = new DashboardService($dashboardModel);
+    $dashboardRepository = new DashboardRepository();
+    $this->service = new DashboardService($dashboardRepository);
     }
 
     public function index($asApiResponse = false) {
@@ -62,8 +62,8 @@ class DashboardController {
                 $conta = intval($_GET['conta']);
             }
 
-            $formatoModel = new FormatoModel();
-            $formatoData  = $formatoModel->getUltimoFormato();
+            $formatoRepository = new FormatoRepository();
+            $formatoData  = $formatoRepository->getUltimoFormato();
 
             $data = [
                 'periodo'             => $periodo,

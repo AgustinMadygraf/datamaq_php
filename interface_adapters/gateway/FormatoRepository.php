@@ -20,7 +20,6 @@ class FormatoRepository implements FormatoRepositoryInterface {
             'formato'      => "No especificado"
         ];
 
-        // Usamos consulta simple ya que no se reciben parámetros externos
         $sql = "SELECT pb.*, t.formato 
                 FROM produccion_bolsas_aux pb 
                 LEFT JOIN tabla_1 t ON pb.ID_formato = t.ID_formato 
