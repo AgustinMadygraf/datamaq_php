@@ -4,7 +4,7 @@ Path: interface_adapters/controller/DashboardControllerV0.php
 */
 
 require_once __DIR__ . '/../gateway/DashboardRepository.php';
-require_once __DIR__ . '/../gateway/FormatoRepository.php';
+require_once __DIR__ . '/../../use_cases/GetUltimoFormato.php';
 require_once __DIR__ . '/../../use_cases/DashboardService.php';
 
 class DashboardController {
@@ -63,7 +63,8 @@ class DashboardController {
             }
 
             $formatoRepository = new FormatoRepository();
-            $formatoData  = $formatoRepository->getUltimoFormato();
+            $getUltimoFormato = new GetUltimoFormato($formatoRepository);
+            $formatoData = $getUltimoFormato->execute();
 
             $data = [
                 'periodo'             => $periodo,
