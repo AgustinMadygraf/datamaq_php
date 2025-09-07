@@ -100,4 +100,17 @@ Cliente HTTP
 
 ---
 
+## Inicialización de la base de datos
+
+La creación de la base de datos y las tablas se centraliza en el script `infrastructure/db_initializer.php`. Este script debe ejecutarse manualmente o como parte del proceso de despliegue para garantizar que el entorno esté listo antes de iniciar la aplicación.
+
+- El script es idempotente y seguro para entornos de desarrollo y producción.
+- La lógica de inicialización no debe estar en la clase de conexión ni en los casos de uso.
+
+Ejemplo de uso:
+
+```bash
+php infrastructure/db_initializer.php
+```
+
 > Para dudas o contribuciones, consulta primero este documento y el `README.md`.

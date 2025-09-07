@@ -22,6 +22,16 @@ Proyecto PHP basado en Clean Architecture para la gestión y visualización de d
 3. Revisar la configuración en `infrastructure/app_config.php`.
 4. Asegurarse de que los permisos de los archivos y carpetas sean correctos.
 
+## Inicialización automática de la base de datos
+
+Antes de ejecutar la aplicación, asegúrate de inicializar la base de datos y las tablas necesarias ejecutando el script:
+
+```bash
+php infrastructure/db_initializer.php
+```
+
+Este script creará la base de datos y las tablas requeridas si no existen. Es seguro ejecutarlo varias veces (idempotente).
+
 ## Ejecución
 
 - Acceder a los endpoints en `api/v0/` o `api/v1/` según la versión deseada.
