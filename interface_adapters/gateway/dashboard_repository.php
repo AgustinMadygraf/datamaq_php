@@ -46,11 +46,32 @@ class DashboardRepository implements DashboardRepositoryInterface {
         ];
     }
 
-    // Alias para v1.1, permite futura extensión
+    // Implementación real para v1.1: ejemplo accediendo a tabla 'produccion'
     public function getRealDashboardData($params = []) {
-        // Extraer parámetros esperados para v1.1
-        $periodo = isset($params['periodo']) ? $params['periodo'] : 'semana';
-        $conta = isset($params['conta']) ? $params['conta'] : null;
-        return $this->getDashboardData($periodo, $conta);
+        $fecha = isset($params['fecha']) ? $params['fecha'] : date('Y-m-d');
+        $turno = isset($params['turno']) ? $params['turno'] : 'completo';
+        // Usar la base de datos DB_NAME2 (registro_stock)
+        $db = Database::getInstance(DB_NAME2);
+        $conn = $db->getConnection();
+        $sql = "SELECT * FROM produccion WHERE fecha = ? AND turno = ? ORDER BY id ASC";
+        $stmt = $conn->prepare($sql);
+        if (!$stmt) {
+            return [
+                'error' => 'No se pudo preparar la consulta. Verifica que la tabla produccion existe en la base de datos registro_stock.'
+            ];
+        }
+        $stmt->bind_param('ss', $fecha, $turno);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+        $stmt->close();
+        return [
+            'fecha' => $fecha,
+            'turno' => $turno,
+            'produccion' => $data
+        ];
     }
 }
