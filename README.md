@@ -27,9 +27,12 @@ Proyecto PHP basado en Clean Architecture para la gestión y visualización de d
 - Acceder a los endpoints en `api/v0/` o `api/v1/` según la versión deseada.
 - Los controladores orquestan los casos de uso y nunca acceden directamente a la infraestructura.
 
+
 ## Documentación
 
-- Ver `docs/estructura.md` para detalles sobre la arquitectura y dependencias.
+- Ver `docs/estructura.md` para detalles sobre la arquitectura, el flujo de datos y las dependencias entre capas.
+- El documento explica cómo los datos fluyen desde la API hasta la infraestructura y de regreso, siguiendo Clean Architecture.
+- Se enfatiza la separación de responsabilidades, el uso de interfaces y la inversión de dependencias para facilitar el mantenimiento y la escalabilidad.
 
 ---
 
