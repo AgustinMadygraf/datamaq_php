@@ -1,11 +1,11 @@
 <?php
 /*
-Path: interface_adapters/controller/DashboardController.php
+Path: interface_adapters/controller/DashboardControllerV0.php
 */
 
 require_once __DIR__ . '/../gateway/DashboardModel.php';
 require_once __DIR__ . '/../gateway/FormatoModel.php';
-require_once __DIR__ . '/DashboardService.php';
+require_once __DIR__ . '/../../use_cases/DashboardService.php';
 
 class DashboardController {
     protected $service;

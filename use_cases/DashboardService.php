@@ -1,6 +1,9 @@
 <?php
-// Servicio migrado desde backend/services/DashboardService.php
-require_once __DIR__ . '/../gateway/DashboardModel.php';
+/*
+Path: use_cases/DashboardService.php
+*/
+
+require_once __DIR__ . '/../interface_adapters/gateway/DashboardModel.php';
 
 class DashboardService {
     protected $model;
@@ -15,3 +18,4 @@ class DashboardService {
         }
     }
 }
+?>
