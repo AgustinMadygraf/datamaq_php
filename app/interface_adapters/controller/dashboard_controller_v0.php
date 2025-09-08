@@ -74,8 +74,8 @@ class DashboardController {
                 'vel_ult_calculada'   => $vel_ult,
                 'unixtime'            => $unixtime_arg,
                 'formatoData'         => [
-                    'formato' => $formatoData['formato'] ?? 'No disponible',
-                    'ancho_bobina' => $formatoData['ancho_bobina'] ?? 'No disponible'
+                    'formato' => $formatoData->nombre ?? 'No disponible',
+                    'ancho_bobina' => $formatoData->datos['ancho_bobina'] ?? 'No disponible'
                 ],
                 'uiData' => [
                     'class' => $class,
