@@ -4,12 +4,12 @@ Path: app/interface_adapters/controller/DashboardControllerV0.php
 */
 
 require_once __DIR__ . '/../gateway/dashboard_repository.php';
-require_once __DIR__ . '/../../use_cases/get_ultimo_formato.php';
+require_once __DIR__ . '/../../use_cases/get_dashboard_data_v0.php';
 require_once __DIR__ . '/../gateway/formato_repository.php';
-require_once __DIR__ . '/../../use_cases/dashboard_service.php';
+require_once __DIR__ . '/../../use_cases/get_ultimo_formato.php';
 
 class DashboardController {
-    protected $service;
+    protected $useCase;
 
     protected $ls_periodos = [
         'semana' => 604800,
@@ -29,16 +29,15 @@ class DashboardController {
     protected $pot = 0;
 
     public function __construct() {
-    $dashboardRepository = new DashboardRepository();
-    $this->service = new DashboardService($dashboardRepository);
+        $dashboardRepository = new DashboardRepository();
+        $this->useCase = new GetDashboardDataV0($dashboardRepository);
     }
 
     public function index($periodo = null, $conta = null) {
         try {
             // Obtener periodo desde argumento o default
-                // Validar y asignar periodo
-                $periodo = ($periodo && array_key_exists($periodo, $this->ls_periodos)) ? $periodo : 'semana';
-            $dashboardData = $this->service->getDashboardData($periodo, $conta);
+            $periodo = ($periodo && array_key_exists($periodo, $this->ls_periodos)) ? $periodo : 'semana';
+            $dashboardData = $this->useCase->execute($periodo, $conta);
             $vel_ult  = $dashboardData['vel_ult'] ?? null;
             $unixtime = $dashboardData['unixtime'] ?? time();
             $rawdata  = $dashboardData['rawdata'] ?? [];
@@ -52,16 +51,15 @@ class DashboardController {
             unset($row);
 
             // Obtener conta desde argumento o default
-                // Validar y asignar conta
-                $valorInicial = $unixtime * 1000;
-                if ($conta !== null && $conta <= $valorInicial) {
-                    $conta = intval($conta);
-                } else {
-                    $conta = $valorInicial;
-                }
+            $valorInicial = $unixtime * 1000;
+            if ($conta !== null && $conta <= $valorInicial) {
+                $conta = intval($conta);
+            } else {
+                $conta = $valorInicial;
+            }
 
             $formatoRepository = new FormatoRepository();
-            $getUltimoFormato = new GetUltimoFormato($formatoRepository); // FormatoRepository implementa FormatoRepositoryInterface
+            $getUltimoFormato = new GetUltimoFormato($formatoRepository);
             $formatoData = $getUltimoFormato->execute();
 
             $class = $this->ls_class[$periodo];

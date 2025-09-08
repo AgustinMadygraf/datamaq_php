@@ -1,6 +1,6 @@
 <?php
 /*
-Path: app/use_cases/get_dashboard_data.php
+Path: app/use_cases/get_dashboard_data_v1.php
 */
 
 require_once __DIR__ . '/../entities/dashboard.php';
