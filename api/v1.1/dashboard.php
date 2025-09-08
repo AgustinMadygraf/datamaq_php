@@ -16,15 +16,19 @@ error_reporting(E_ALL);
 
 
 // Cargar el controlador de Clean Architecture
-require_once __DIR__ . '/../../app/interface_adapters/controller/dashboard_controller_v1.php';
-require_once __DIR__ . '/../../app/use_cases/get_dashboard_data_v1_1.php';
 
-require_once __DIR__ . '/../../app/interface_adapters/gateway/dashboard_repository.php';
 require_once __DIR__ . '/../../app/infrastructure/MySQLDatabaseConnection.php';
+require_once __DIR__ . '/../../app/interface_adapters/gateway/dashboard_repository.php';
+require_once __DIR__ . '/../../app/use_cases/get_dashboard_data_v1_1.php';
+require_once __DIR__ . '/../../app/interface_adapters/presenter/dashboard_presenter.php';
+require_once __DIR__ . '/../../app/interface_adapters/controller/dashboard_controller_v1.php';
 
-$repository = new DashboardRepository(new MySQLDatabaseConnection());
+
+$dbConnection = new MySQLDatabaseConnection();
+$repository = new DashboardRepository($dbConnection);
 $useCase = new GetDashboardDataV1_1($repository);
-$controller = new DashboardControllerV1($repository, $useCase);
+$presenter = new DashboardPresenter();
+$controller = new DashboardControllerV1($repository, $useCase, $presenter);
 
 $params = [
 	'fecha' => isset($_GET['fecha']) ? $_GET['fecha'] : date('Y-m-d'),

@@ -31,11 +31,21 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 }
 
 
-require_once __DIR__ . '/../../app/interface_adapters/controller/dashboard_controller_v0.php';
+
+require_once __DIR__ . '/../../app/infrastructure/MySQLDatabaseConnection.php';
+require_once __DIR__ . '/../../app/interface_adapters/gateway/dashboard_repository.php';
+require_once __DIR__ . '/../../app/use_cases/get_dashboard_data_v0.php';
 require_once __DIR__ . '/../../app/interface_adapters/presenter/dashboard_presenter.php';
 
-$controller = new DashboardController();
+require_once __DIR__ . '/../../app/interface_adapters/controller/dashboard_controller_v0.php';
+
+$dbConnection = new MySQLDatabaseConnection();
+$dashboardRepository = new DashboardRepository($dbConnection);
+$useCase = new GetDashboardDataV0($dashboardRepository);
 $presenter = new DashboardPresenter();
+$controller = new DashboardControllerV0($dashboardRepository, $useCase);
+
+// Asegurando que la clase instanciada sea DashboardControllerV0
 
 try {
     $periodo = isset($_GET['periodo']) ? $_GET['periodo'] : null;

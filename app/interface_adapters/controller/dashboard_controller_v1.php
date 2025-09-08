@@ -5,22 +5,27 @@ Path: app/interface_adapters/controller/dashboard_controller_v1.php
 
 require_once __DIR__ . '/../presenter/dashboard_presenter.php';
 require_once __DIR__ . '/../gateway/dashboard_repository.php';
-require_once __DIR__ . '/../../infrastructure/MySQLDatabaseConnection.php';
 require_once __DIR__ . '/../../use_cases/get_dashboard_data_v1.php';
+require_once __DIR__ . '/../gateway/DatabaseConnectionInterface.php';
 
 class DashboardControllerV1 {
     protected $repository;
     protected $useCase;
     protected $presenter;
 
+    /**
+     * @param DashboardRepositoryInterface $repository
+     * @param GetDashboardData $useCase
+     * @param DashboardPresenter $presenter
+     */
     public function __construct(
-        $repository = null,
-        $useCase = null,
-        $presenter = null
+        $repository,
+        $useCase,
+        $presenter
     ) {
-    $this->repository = $repository ?: new DashboardRepository(new MySQLDatabaseConnection());
-        $this->useCase = $useCase ?: new GetDashboardData($this->repository);
-        $this->presenter = $presenter ?: new DashboardPresenter();
+        $this->repository = $repository;
+        $this->useCase = $useCase;
+        $this->presenter = $presenter;
     }
 
     // Unifica la interfaz con otros controladores
