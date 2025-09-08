@@ -13,4 +13,12 @@ class Dashboard {
         $this->unixtime = $unixtime;
         $this->rawdata = $rawdata;
     }
+
+    public function toArray() {
+        return [
+            'vel_ult' => $this->velUlt,
+            'unixtime' => $this->unixtime,
+            'rawdata' => $this->rawdata,
+        ];
+    }
 }

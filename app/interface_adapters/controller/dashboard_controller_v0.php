@@ -38,9 +38,9 @@ class DashboardController {
             // Obtener periodo desde argumento o default
             $periodo = ($periodo && array_key_exists($periodo, $this->ls_periodos)) ? $periodo : 'semana';
             $dashboardData = $this->useCase->execute($periodo, $conta);
-            $vel_ult  = $dashboardData['vel_ult'] ?? null;
-            $unixtime = $dashboardData['unixtime'] ?? time();
-            $rawdata  = $dashboardData['rawdata'] ?? [];
+            $vel_ult  = $dashboardData->velUlt ?? null;
+            $unixtime = $dashboardData->unixtime ?? time();
+            $rawdata  = $dashboardData->rawdata ?? [];
 
             $unixtime_arg = $unixtime - 10800;
             foreach ($rawdata as &$row) {

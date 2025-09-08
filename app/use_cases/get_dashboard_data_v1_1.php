@@ -4,6 +4,7 @@ Path: app/use_cases/get_dashboard_data_v1_1.php
 */
 
 require_once __DIR__ . '/../interface_adapters/gateway/dashboard_repository_interface.php';
+require_once __DIR__ . '/../entities/dashboard.php';
 
 class GetDashboardDataV1_1 {
     private $dashboardRepository;
@@ -14,20 +15,20 @@ class GetDashboardDataV1_1 {
 
     public function execute($params = []) {
         try {
-            // Get data from repository
             $data = $this->dashboardRepository->getRealDashboardData($params);
-            
-            // Check for errors
+
             if (isset($data['error']) && $data['error']) {
                 error_log('Error in GetDashboardDataV1_1: ' . $data['message']);
-                return $data; // Return the error as is
+                return $data; // Retorna el error como ahora
             }
-            
-            // Process and transform data if needed
-            // This is where you would add any additional business logic
-            
-            return $data;
-            
+
+            // Mapear a entidad Dashboard
+            return new Dashboard(
+                $data['vel_ult'] ?? null,
+                $data['unixtime'] ?? null,
+                $data['rawdata'] ?? []
+            );
+
         } catch (Exception $e) {
             error_log('Exception in GetDashboardDataV1_1: ' . $e->getMessage());
             return [
