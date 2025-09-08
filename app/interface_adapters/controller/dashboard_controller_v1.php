@@ -10,15 +10,28 @@ require_once __DIR__ . '/../gateway/dashboard_repository_interface.php';
 
 class DashboardControllerV1 {
     protected $repository;
+    protected $useCase;
+    protected $presenter;
 
-    public function __construct() {
-        $this->repository = new DashboardRepository();
+    public function __construct(
+        $repository = null,
+        $useCase = null,
+        $presenter = null
+    ) {
+        $this->repository = $repository ?: new DashboardRepository();
+        $this->useCase = $useCase ?: new GetDashboardData($this->repository);
+        $this->presenter = $presenter ?: new DashboardPresenter();
     }
 
-    public function getDashboardData($fecha, $turno) {
-        $useCase = new GetDashboardData($this->repository);
-        $dashboard = $useCase->execute($fecha, $turno);
-    $presenter = new DashboardPresenter();
-    return $presenter->present($dashboard, 'v1');
+    // Unifica la interfaz con otros controladores
+    public function handle($request) {
+        try {
+            $fecha = $request['fecha'] ?? date('Y-m-d');
+            $turno = $request['turno'] ?? 'completo';
+            $dashboard = $this->useCase->execute($fecha, $turno);
+            return $this->presenter->present($dashboard, 'v1');
+        } catch (\Exception $e) {
+            return $this->presenter->presentError($e->getMessage(), 'v1', 500);
+        }
     }
 }
