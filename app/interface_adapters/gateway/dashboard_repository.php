@@ -55,37 +55,29 @@ class DashboardRepository implements DashboardRepositoryInterface {
     public function getRealDashboardData($params = []) {
         $fecha = isset($params['fecha']) ? $params['fecha'] : date('Y-m-d');
         $turno = isset($params['turno']) ? $params['turno'] : 'completo';
+        $desdeTimestamp = isset($params['desde_timestamp']) ? $params['desde_timestamp'] : strtotime($fecha . ' 00:00:00');
         $rawdata = [];
-        
         try {
             $conn = $this->dbConnection->getConnection();
-            
-            // Datos del día actual
-            $sqlCurrentDay = "SELECT * FROM produccion_bolsas_aux 
-                              WHERE DATE(timestamp) = ? 
-                              ORDER BY ID DESC";
+            // Datos del día actual desde las 00:00
+            $sqlCurrentDay = "SELECT * FROM produccion_bolsas_aux WHERE UNIX_TIMESTAMP(timestamp) >= ? ORDER BY ID DESC";
             $stmtCurrentDay = $conn->prepare($sqlCurrentDay);
-            $stmtCurrentDay->bind_param("s", $fecha);
+            $stmtCurrentDay->bind_param("i", $desdeTimestamp);
             $stmtCurrentDay->execute();
             $resultCurrentDay = $stmtCurrentDay->get_result();
-            
             $currentDayData = [];
             if ($resultCurrentDay && $resultCurrentDay->num_rows > 0) {
                 while ($row = $resultCurrentDay->fetch_assoc()) {
                     $currentDayData[] = $row;
                 }
             }
-            
-            // Datos del día anterior
+            // Datos del día anterior (opcional, se mantiene para compatibilidad)
             $previousDay = date('Y-m-d', strtotime($fecha . ' -1 day'));
-            $sqlPreviousDay = "SELECT * FROM produccion_bolsas_aux 
-                               WHERE DATE(timestamp) = ? 
-                               ORDER BY ID DESC";
+            $sqlPreviousDay = "SELECT * FROM produccion_bolsas_aux WHERE DATE(timestamp) = ? ORDER BY ID DESC";
             $stmtPreviousDay = $conn->prepare($sqlPreviousDay);
             $stmtPreviousDay->bind_param("s", $previousDay);
             $stmtPreviousDay->execute();
             $resultPreviousDay = $stmtPreviousDay->get_result();
-            
             $previousDayData = [];
             if ($resultPreviousDay && $resultPreviousDay->num_rows > 0) {
                 while ($row = $resultPreviousDay->fetch_assoc()) {
