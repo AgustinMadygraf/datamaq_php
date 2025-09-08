@@ -54,88 +54,29 @@ class DashboardRepository implements DashboardRepositoryInterface {
     // Implementación real para v1.1: ejemplo accediendo a tabla 'produccion'
     public function getRealDashboardData($params = []) {
         $fecha = isset($params['fecha']) ? $params['fecha'] : date('Y-m-d');
-        $turno = isset($params['turno']) ? $params['turno'] : 'completo';
         $desdeTimestamp = isset($params['desde_timestamp']) ? $params['desde_timestamp'] : strtotime($fecha . ' 00:00:00');
-        $rawdata = [];
-        try {
-            $conn = $this->dbConnection->getConnection();
-            // Datos del día actual desde las 00:00
-            $sqlCurrentDay = "SELECT * FROM produccion_bolsas_aux WHERE UNIX_TIMESTAMP(timestamp) >= ? ORDER BY ID DESC";
-            $stmtCurrentDay = $conn->prepare($sqlCurrentDay);
-            $stmtCurrentDay->bind_param("i", $desdeTimestamp);
-            $stmtCurrentDay->execute();
-            $resultCurrentDay = $stmtCurrentDay->get_result();
-            $currentDayData = [];
-            if ($resultCurrentDay && $resultCurrentDay->num_rows > 0) {
-                while ($row = $resultCurrentDay->fetch_assoc()) {
-                    $currentDayData[] = $row;
-                }
+        $conn = $this->dbConnection->getConnection();
+
+        // Corrige aquí el nombre de la columna
+        $sql = "SELECT unixtime, HR_COUNTER1 FROM intervalproduction WHERE unixtime >= {$desdeTimestamp} ORDER BY unixtime ASC";
+        $result = $conn->query($sql);
+
+        $hoy = [];
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $hoy[] = intval($row['HR_COUNTER1']);
             }
-            // Datos del día anterior (opcional, se mantiene para compatibilidad)
-            $previousDay = date('Y-m-d', strtotime($fecha . ' -1 day'));
-            $sqlPreviousDay = "SELECT * FROM produccion_bolsas_aux WHERE DATE(timestamp) = ? ORDER BY ID DESC";
-            $stmtPreviousDay = $conn->prepare($sqlPreviousDay);
-            $stmtPreviousDay->bind_param("s", $previousDay);
-            $stmtPreviousDay->execute();
-            $resultPreviousDay = $stmtPreviousDay->get_result();
-            $previousDayData = [];
-            if ($resultPreviousDay && $resultPreviousDay->num_rows > 0) {
-                while ($row = $resultPreviousDay->fetch_assoc()) {
-                    $previousDayData[] = $row;
-                }
-            }
-            
-            // Promedio de la semana anterior
-            $weekStartDate = date('Y-m-d', strtotime($fecha . ' -7 days'));
-            $weekEndDate = date('Y-m-d', strtotime($fecha . ' -1 day'));
-            $sqlWeekAvg = "SELECT AVG(velocidad) as avg_velocidad, 
-                           AVG(bolsas) as avg_bolsas
-                           FROM produccion_bolsas_aux 
-                           WHERE DATE(timestamp) BETWEEN ? AND ?";
-            $stmtWeekAvg = $conn->prepare($sqlWeekAvg);
-            $stmtWeekAvg->bind_param("ss", $weekStartDate, $weekEndDate);
-            $stmtWeekAvg->execute();
-            $resultWeekAvg = $stmtWeekAvg->get_result();
-            
-            $weeklyAvgData = [];
-            if ($resultWeekAvg && $resultWeekAvg->num_rows > 0) {
-                $weeklyAvgData = $resultWeekAvg->fetch_assoc();
-            }
-            
-            // Format the data to match v1 structure
-            // Get the latest velocity if available
-            $vel_ult = 0;
-            if (!empty($currentDayData)) {
-                $vel_ult = isset($currentDayData[0]['velocidad']) ? $currentDayData[0]['velocidad'] : 0;
-            }
-            
-            // Current timestamp in Unix format
-            $unixtime = time();
-            
-            // Combine all data for rawdata
-            $rawdata = [
-                'current_day' => $currentDayData,
-                'previous_day' => $previousDayData,
-                'weekly_avg' => $weeklyAvgData
-            ];
-            
-            return [
-                'vel_ult' => $vel_ult,
-                'unixtime' => $unixtime,
-                'rawdata' => $rawdata,
-            ];
-            
-        } catch (Exception $e) {
-            // Log the error
-            error_log('Error in getRealDashboardData: ' . $e->getMessage());
-            
-            return [
-                'error' => true,
-                'message' => 'Error retrieving dashboard data',
-                'vel_ult' => 0,
-                'unixtime' => time(),
-                'rawdata' => [],
-            ];
         }
+        error_log('Hoy: ' . json_encode($hoy));
+
+        return [
+            'vel_ult' => end($hoy),
+            'unixtime' => count($hoy) ? $result->fetch_assoc()['unixtime'] : null,
+            'rawdata' => [
+                'hoy' => ['data' => $hoy],
+                'ayer' => ['data' => []],
+                'semana_anterior' => ['data' => []]
+            ]
+        ];
     }
 }

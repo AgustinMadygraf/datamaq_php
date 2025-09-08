@@ -29,8 +29,13 @@ class GetDashboardDataV1_1 {
         ];
         
         $data = $this->repository->getRealDashboardData($params);
-        
-        return $data;
+
+        // Convertir a objeto esperado por el presentador
+        $dashboard = new \stdClass();
+        $dashboard->velUlt = isset($data['vel_ult']) ? $data['vel_ult'] : null;
+        $dashboard->unixtime = isset($data['unixtime']) ? $data['unixtime'] : null;
+        $dashboard->rawdata = isset($data['rawdata']) ? $data['rawdata'] : [];
+        return $dashboard;
     }
 }
 ?>
