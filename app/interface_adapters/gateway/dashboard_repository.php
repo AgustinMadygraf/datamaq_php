@@ -3,17 +3,22 @@
 Path: app/interface_adapters/gateway/dashboard_repository.php
 */
 
+require_once __DIR__ . '/DatabaseConnectionInterface.php';
 require_once __DIR__ . '/../../use_cases/dashboard_repository_interface.php';
-require_once __DIR__ . '/../../infrastructure/database.php';
 
 class DashboardRepository implements DashboardRepositoryInterface {
+    private $dbConnection;
+
+    public function __construct(DatabaseConnectionInterface $dbConnection) {
+        $this->dbConnection = $dbConnection;
+    }
+
     public function getDashboardData($periodo, $conta = null) {
         $ls_periodos = ['semana' => 604800, 'turno' => 28800, 'hora' => 7200];
         if (!isset($ls_periodos[$periodo])) {
             throw new InvalidArgumentException('Periodo no válido');
         }
-        $db = Database::getInstance();
-        $conn = $db->getConnection();
+    $conn = $this->dbConnection->getConnection();
         $sqlLast = "SELECT `unixtime`, `HR_COUNTER1` FROM `intervalproduction` ORDER BY `unixtime` DESC LIMIT 1";
         $result = $conn->query($sqlLast);
         $res = [];
@@ -53,8 +58,7 @@ class DashboardRepository implements DashboardRepositoryInterface {
         $rawdata = [];
         
         try {
-            $db = Database::getInstance(DB_NAME);
-            $conn = $db->getConnection();
+            $conn = $this->dbConnection->getConnection();
             
             // Datos del día actual
             $sqlCurrentDay = "SELECT * FROM produccion_bolsas_aux 

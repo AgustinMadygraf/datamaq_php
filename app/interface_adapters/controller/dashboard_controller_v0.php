@@ -4,9 +4,10 @@ Path: app/interface_adapters/controller/DashboardControllerV0.php
 */
 
 require_once __DIR__ . '/../gateway/dashboard_repository.php';
-require_once __DIR__ . '/../../use_cases/get_dashboard_data_v0.php';
+require_once __DIR__ . '/../../infrastructure/MySQLDatabaseConnection.php';
 require_once __DIR__ . '/../gateway/formato_repository.php';
 require_once __DIR__ . '/../../use_cases/get_ultimo_formato.php';
+require_once __DIR__ . '/../../use_cases/get_dashboard_data_v0.php';
 
 class DashboardController {
     protected $useCase;
@@ -29,7 +30,7 @@ class DashboardController {
     protected $pot = 0;
 
     public function __construct() {
-        $dashboardRepository = new DashboardRepository();
+    $dashboardRepository = new DashboardRepository(new MySQLDatabaseConnection());
         $this->useCase = new GetDashboardDataV0($dashboardRepository);
     }
 
