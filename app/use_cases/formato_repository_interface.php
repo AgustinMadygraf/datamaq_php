@@ -1,8 +1,8 @@
+<?php
 /*
-Path: app/interface_adapters/gateway/formato_repository_interface.php
+Path: app/use_cases/formato_repository_interface.php
 */
 
 interface FormatoRepositoryInterface {
     public function getUltimoFormato();
 }
-

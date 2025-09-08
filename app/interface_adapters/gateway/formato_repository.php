@@ -3,7 +3,7 @@
 Path: app/interface_adapters/gateway/formato_repository.php
 */
 
-require_once __DIR__ . '/formato_repository_interface.php';
+require_once __DIR__ . '/../../use_cases/formato_repository_interface.php';
 
 class FormatoRepository implements FormatoRepositoryInterface {
     private $conexion;
