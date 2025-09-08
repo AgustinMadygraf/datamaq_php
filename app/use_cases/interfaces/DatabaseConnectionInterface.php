@@ -1,5 +1,5 @@
 <?php
-// Path: app/interface_adapters/gateway/DatabaseConnectionInterface.php
+// Path: app/use_cases/interfaces/DatabaseConnectionInterface.php
 interface DatabaseConnectionInterface {
     public function getConnection();
 }

@@ -1,6 +1,6 @@
 <?php
 // Path: app/infrastructure/MySQLDatabaseConnection.php
-require_once __DIR__ . '/../interface_adapters/gateway/DatabaseConnectionInterface.php';
+require_once __DIR__ . '/../use_cases/interfaces/DatabaseConnectionInterface.php';
 require_once __DIR__ . '/database.php';
 
 class MySQLDatabaseConnection implements DatabaseConnectionInterface {

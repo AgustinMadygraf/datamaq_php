@@ -4,7 +4,7 @@ Path: app/use_cases/get_dashboard_data_v0.php
 Caso de uso específico para la obtención de datos del dashboard versión V0.
 */
 
-require_once __DIR__ . '/dashboard_repository_interface.php';
+require_once __DIR__ . '/interfaces/DashboardRepositoryInterface.php';
 require_once __DIR__ . '/../entities/dashboard.php';
 
 class GetDashboardDataV0 {

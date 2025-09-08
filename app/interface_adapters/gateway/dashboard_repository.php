@@ -3,8 +3,8 @@
 Path: app/interface_adapters/gateway/dashboard_repository.php
 */
 
-require_once __DIR__ . '/DatabaseConnectionInterface.php';
-require_once __DIR__ . '/../../use_cases/dashboard_repository_interface.php';
+require_once __DIR__ . '/../../use_cases/interfaces/DatabaseConnectionInterface.php';
+require_once __DIR__ . '/../../use_cases/interfaces/DashboardRepositoryInterface.php';
 
 class DashboardRepository implements DashboardRepositoryInterface {
     private $dbConnection;
