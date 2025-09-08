@@ -1,6 +1,6 @@
 <?php
 /*
-Path: app/interface_adapters/gateway/dashboard_repository_interface.php
+Path: app/use_cases/dashboard_repository_interface.php
 */
 
 interface DashboardRepositoryInterface {

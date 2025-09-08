@@ -3,7 +3,7 @@
 Path: app/use_cases/get_dashboard_data_v1_1.php
 */
 
-require_once __DIR__ . '/../interface_adapters/gateway/dashboard_repository_interface.php';
+require_once __DIR__ . '/dashboard_repository_interface.php';
 require_once __DIR__ . '/../entities/dashboard.php';
 
 class GetDashboardDataV1_1 {

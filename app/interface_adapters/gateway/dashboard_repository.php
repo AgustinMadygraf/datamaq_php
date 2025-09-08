@@ -3,7 +3,7 @@
 Path: app/interface_adapters/gateway/dashboard_repository.php
 */
 
-require_once __DIR__ . '/dashboard_repository_interface.php';
+require_once __DIR__ . '/../../use_cases/dashboard_repository_interface.php';
 require_once __DIR__ . '/../../infrastructure/database.php';
 
 class DashboardRepository implements DashboardRepositoryInterface {
