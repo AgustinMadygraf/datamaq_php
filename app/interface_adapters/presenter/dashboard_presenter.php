@@ -23,9 +23,8 @@ class DashboardPresenter {
         switch ($version) {
             case 'v0':
                 return $this->presentV0($data, $status, $message);
-            case 'v1.1':
-                return $this->presentV1_1($data);
             case 'v1':
+            case 'v1.1':
             default:
                 return $this->presentV1($data);
         }
@@ -73,13 +72,5 @@ class DashboardPresenter {
             "debug_params" => []
         ];
         return json_encode($response, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-    }
-
-    private function presentV1_1($data) {
-        // Formato v1.1 (real, simple)
-        return json_encode([
-            'status' => 'success',
-            'data' => $data
-        ]);
     }
 }
