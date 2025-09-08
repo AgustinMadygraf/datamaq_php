@@ -32,18 +32,18 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 
 
 require_once __DIR__ . '/../../app/interface_adapters/controller/dashboard_controller_v0.php';
-require_once __DIR__ . '/../../app/interface_adapters/presenter/dashboard_presenter_v0.php';
+require_once __DIR__ . '/../../app/interface_adapters/presenter/dashboard_presenter.php';
 
 $controller = new DashboardController();
-$presenter = new DashboardPresenterV0();
+$presenter = new DashboardPresenter();
 
 try {
     $periodo = isset($_GET['periodo']) ? $_GET['periodo'] : null;
     $conta = isset($_GET['conta']) ? $_GET['conta'] : null;
     $data = $controller->apiGetDashboardData($periodo, $conta);
     header('Content-Type: application/json; charset=utf-8');
-    echo $presenter->present($data);
+    echo $presenter->present($data, 'v0');
 } catch (Exception $e) {
     header('Content-Type: application/json; charset=utf-8', true, 500);
-    echo $presenter->presentError($e->getMessage(), 500);
+    echo $presenter->presentError($e->getMessage(), 'v0', 500);
 }
