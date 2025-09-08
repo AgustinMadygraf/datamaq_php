@@ -4,16 +4,17 @@ Estoy trabajando en un proyecto que intenta seguir la Clean Architecture, detall
 
 ### Situación actual del proyecto:
 - Se están utilizando los siguientes directorios como base:
-  - entities/
-  - use_cases/
-  - interface_adapters/presenter/
-  - interface_adapters/gateway/
-  - interface_adapters/controller/
-  - infrastructure/
+  - app/entities/
+  - app/use_cases/
+  - app/interface_adapters/presenter/
+  - app/interface_adapters/gateway/
+  - app/interface_adapters/controller/
+  - app/infrastructure/
+  - app/shared/
   - api/
 
 ### Objetivo:
-- Confirmar que los archivos dentro de las carpetas `entities/`, `use_cases/`, `interface_adapters/presenter/`, `interface_adapters/gateway/`, `interface_adapters/controller/`, `infrastructure/` y `api/` estén correctamente organizados y alineados con los principios de Clean Architecture.
+- Confirmar que los archivos dentro de las carpetas `app/entities/`, `app/use_cases/`, `app/interface_adapters/presenter/`, `app/interface_adapters/gateway/`, `app/interface_adapters/controller/`, `app/infrastructure/`, `app/shared/` y `api/` estén correctamente organizados y alineados con los principios de Clean Architecture.
   - Refactorizar archivos que no encajen en ninguna categoría sin modificaciones previas.
   - Eliminar duplicados o archivos innecesarios.
 

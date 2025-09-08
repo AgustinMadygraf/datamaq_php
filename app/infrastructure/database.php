@@ -5,7 +5,7 @@ Este archivo contiene la clase Database, que se encarga de manejar la conexión 
 */
 
 // Incluir las constantes definidas en app_config.php
-require_once __DIR__ . '/app_config.php';
+require_once __DIR__ . '/../shared/app_config.php';
 
 class Database {
     private static $instances = [];

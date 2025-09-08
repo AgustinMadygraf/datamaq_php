@@ -10,7 +10,7 @@ class FormatoRepository implements FormatoRepositoryInterface {
 
     public function __construct() {
         // Reutiliza la conexión mediante la configuración de app_config.php
-        require_once __DIR__ . '/../../infrastructure/app_config.php';
+        require_once __DIR__ . '/../../shared/app_config.php';
         $this->conexion = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
         if (!$this->conexion) {
             die("Conexión fallida: " . mysqli_connect_error());

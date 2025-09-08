@@ -5,7 +5,7 @@ Inicializa la base de datos y todas las tablas necesarias.
 Permite importar datos desde un archivo SQL externo.
 */
 
-require_once 'app_config.php';
+require_once '../shared/app_config.php';
 
 class DatabaseInitializer
 {
