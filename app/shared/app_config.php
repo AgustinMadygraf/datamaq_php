@@ -1,6 +1,6 @@
 <?php
 /*
-Path: app/infrastructure/app_config.php
+Path: app/shared/app_config.php
 */
 
 require_once __DIR__ . '/../../env.php';

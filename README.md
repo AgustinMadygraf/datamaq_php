@@ -27,7 +27,7 @@ Proyecto PHP basado en Clean Architecture para la gestión y visualización de d
 Antes de ejecutar la aplicación, asegúrate de inicializar la base de datos y las tablas necesarias ejecutando el script:
 
 ```bash
-php infrastructure/db_initializer.php
+php app/tools/db_initializer.php
 ```
 
 Este script creará la base de datos y las tablas requeridas si no existen. Es seguro ejecutarlo varias veces (idempotente).
