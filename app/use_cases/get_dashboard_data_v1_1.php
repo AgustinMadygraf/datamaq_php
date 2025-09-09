@@ -1,6 +1,6 @@
 <?php
 /*
-Path: app/use_cases/get_dashboard_data_v1_1.php
+Path: app/use_cases/get_dashboard_data_v1.php
 */
 
 require_once __DIR__ . '/../entities/dashboard.php';
@@ -12,30 +12,34 @@ class GetDashboardDataV1_1 {
         $this->repository = $repository;
     }
 
-    public function execute($fecha = null, $turno = null) {
-        // Asegurar que solo se devuelven datos desde las 00:00 del día actual
-        if (!$fecha) {
-            $fecha = date('Y-m-d'); // Fecha actual
+    public function execute($fecha, $turno) {
+        // Aquí iría la lógica real de negocio, por ahora devolvemos datos simulados (como en v1)
+        $min = 50; $max = 120;
+        switch ($turno) {
+            case 'central': $min = 60; $max = 90; break;
+            case 'manana': $min = 70; $max = 100; break;
+            case 'tarde': $min = 50; $max = 80; break;
+            case 'dia': $min = 60; $max = 110; break;
         }
-        
-        // Calcular timestamp de las 00:00 del día especificado
-        $timestampInicio = strtotime($fecha . ' 00:00:00');
-        
-        // Obtener datos del repositorio con el filtro aplicado
-        $params = [
-            'fecha' => $fecha,
-            'turno' => $turno ?? 'completo',
-            'desde_timestamp' => $timestampInicio
+        $intervals = ($fecha === date('Y-m-d')) ? (getdate()['hours'] * 12 + intval(getdate()['minutes'] / 5)) : 288;
+        if ($intervals > 288) $intervals = 288;
+        $hoy_data = array_merge($this->random_series($min, $max, $intervals), array_fill(0, 288 - $intervals, null));
+        $ayer_data = $this->random_series($min-10, $max-10, 288);
+        $semana_anterior_data = $this->random_series($min-20, $max-20, 288);
+        $series = [
+            'hoy' => ['data' => $hoy_data],
+            'ayer' => ['data' => $ayer_data],
+            'semana_anterior' => ['data' => $semana_anterior_data]
         ];
-        
-        $data = $this->repository->getRealDashboardData($params);
-
-        // Convertir a objeto esperado por el presentador
-        $dashboard = new \stdClass();
-        $dashboard->velUlt = isset($data['vel_ult']) ? $data['vel_ult'] : null;
-        $dashboard->unixtime = isset($data['unixtime']) ? $data['unixtime'] : null;
-        $dashboard->rawdata = isset($data['rawdata']) ? $data['rawdata'] : [];
+        $dashboard = new Dashboard(100, strtotime($fecha), $series);
         return $dashboard;
     }
+
+    private function random_series($min, $max, $count = 288) {
+        $arr = [];
+        for ($i = 0; $i < $count; $i++) {
+            $arr[] = rand($min, $max);
+        }
+        return $arr;
+    }
 }
-?>

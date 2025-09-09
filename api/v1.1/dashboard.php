@@ -23,7 +23,7 @@ require_once __DIR__ . '/../../app/use_cases/get_dashboard_data_v1_1.php';
 require_once __DIR__ . '/../../app/interface_adapters/presenter/dashboard_presenter.php';
 require_once __DIR__ . '/../../app/interface_adapters/controller/dashboard_controller_v1.php';
 
-
+// Instanciar infraestructura y dependencias
 $dbConnection = new MySQLDatabaseConnection();
 $repository = new DashboardRepository($dbConnection);
 $useCase = new GetDashboardDataV1_1($repository);
